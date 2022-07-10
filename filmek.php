@@ -11,7 +11,17 @@ function insertMovie($connection, $newMovie) {
   $description = $newMovie['description'];
   $insertMovie = $connection->query("INSERT INTO filmek(cim, megjelenesi_ev, rendezo, leiras) VALUES ('$title', $year, '$director', '$description')");
 }
-
+function deleteMovie($connection) {
+  if (isset($_GET['delete_film'])) {
+      $unsetData = $_GET['delete_film'];
+      $delete_filmSQL = $conn->query("DELETE FROM filmek WHERE id = $unsetData");
+      if ($delete_filmSQL) {
+        echo "Sikeres törlés";
+      }else {
+        echo "Valami hiba történ, kérjük keresse fel vevőszolgálatukat";
+      }
+  }
+}
 function connectionToDatabase() {//function csatlakozás az adatbázishoz
   $database = "127.0.0.1";
   $databaseName = "filmek";
@@ -46,6 +56,8 @@ while ($row = $helper->fetch_assoc()) {
   echo "Rendező: ".$row['rendezo']." | ";
   echo "Megjelenési év: ".$row['megjelenesi_ev']." | "."<br>";
   echo "Leírás: ".$row['leiras']."<br><br>";
+  echo "<a href=adatbazis_hazifeladat.php?edit_description=".$row['id'].">Szerkesztés</a><br>";//nem kötelző a kérdőjel előtti rész
+  echo "<a href=adatbazis_hazifeladat.php?delete_film=".$row['id'].">Törlés</a><br>";
 }
 
 ?>
